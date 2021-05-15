@@ -1,0 +1,325 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+    <!-- Header Section End -->
+
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="index"><i class="fa fa-home"></i> Home</a>
+                        <span>Shopping cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a> Click
+                    here to enter your code.</h6>
+                </div>
+            </div>
+            <form action="/checkout" class="checkout__form" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h5>Billing detail</h5>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>First Name <span>*</span></p>
+                                    <input required type="text" placeholder="First Name" name="firstname" id="" aria-describedby="helpId">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Last Name <span>*</span></p>
+                                    <input required type="text" placeholder="Last Name" name="lastname" id="" aria-describedby="helpId">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="checkout__form__input">
+                                    <p>Country <span>*</span></p>
+                                    <input required type="text" placeholder="Country" name="country" id="" aria-describedby="helpId">
+                                </div>
+                                <div class="checkout__form__input">
+                                    <p>Address <span>*</span></p>
+                                    <input required type="text" placeholder="Address" name="address" id="" aria-describedby="helpId">
+                                </div>
+                                <div class="checkout__form__input">
+                                    <p>Town/City <span>*</span></p>
+                                    <input required type="text" placeholder="City" name="city" id="" aria-describedby="helpId">
+                                </div>
+                                <div class="checkout__form__input">
+                                    <p>Country/State <span>*</span></p>
+                                    <input required type="text" placeholder="State" name="state" id="" aria-describedby="helpId">
+                                </div>
+                                <div class="checkout__form__input">
+                                    <p>Postcode/Zip <span>*</span></p>
+                                    <input required type="number" placeholder="PostCode" name="postcode" id="" aria-describedby="helpId">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Phone <span>*</span></p>
+                                    <input required type="number" placeholder="Phone" name="phone" id="" aria-describedby="helpId">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Email <span>*</span></p>
+                                    <input required type="text" placeholder="Email" name="email" id="" aria-describedby="helpId">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="checkout__form__checkbox">
+                                    <label for="acc">
+                                        Create an acount?
+                                        <input type="checkbox" id="acc">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <p>Create am acount by entering the information below. If you are a returing
+                                        customer login at the <br />top of the page</p>
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>Account Password <span>*</span></p>
+                                        <input type="text">
+                                    </div>
+                                    <div class="checkout__form__checkbox">
+                                        <label for="note">
+                                            Note about your order, e.g, special noe for delivery
+                                            <input type="checkbox" id="note">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>Oder notes <span>*</span></p>
+                                        <input type="text"
+                                        placeholder="Note about your order, e.g, special noe for delivery">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="checkout__order">
+                                <h5>Your order</h5>
+                                <div class="checkout__order__product">
+                                    <ul>
+                                        <li>
+                                            <span class="top__text">Product</span>
+                                            <span class="top__text__right">Total</span>
+                                        </li>
+                                        <li>  <span> </span></li>
+                                        <li>  <br />  <span> </span></li>
+                                        <li> <span> </span></li>
+                                        <li> <span> </span></li>
+                                    </ul>
+                                </div>
+                                <div class="checkout__order__total">
+
+                                    <ul>
+                                        <li>Subtotal <span>{{products|total_cart_price:request.session.cart|currency}}</span></li>
+                                        <li>Total <span>{{products|total_cart_price:request.session.cart|currency}}</span></li>
+                                    </ul>
+
+                                    <input type="radio" Name="payment" >Cash On Delivery
+                                    <input type="radio" Name="payment">PayPal
+                                     <input type="submit" class="site-btn" Value="checkout">
+
+                                    <div>
+                                        <div id="paypal-button-container">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+      <!-- Include the PayPal JavaScript SDK -->
+      <script src="https://www.paypal.com/sdk/js?client-id=ASqc1IfwtVGi54rTxwBpUbL3yv9C3cs2cHhKiVo6wBYjTwjIFgj0Fjb_6RHPO2--W8ncT8rNNlhvU7JQ&currency=USD"></script>
+      <script>
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{products|total_cart_price:request.session.cart}}'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!---           <script src="https://www.paypal.com/sdk/js?client-id=ASqc1IfwtVGi54rTxwBpUbL3yv9C3cs2cHhKiVo6wBYjTwjIFgj0Fjb_6RHPO2--W8ncT8rNNlhvU7JQ&currency=USD"></script>
+
+             <script>
+
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                var csrftoken = getCookie('csrftoken');
+
+                var total = '{{product.price}}'
+                var productId = '{{product.id}}'
+
+                function completeOrder(){
+                    var url = "{% url 'complete' %}"
+
+                    fetch(url, {
+                        method:'POST',
+                        headers:{
+                            'Content-type':'application/json',
+                            'X-CSRFToken':csrftoken,
+                        },
+                        body:JSON.stringify({'productId':productId})
+                    })
+                }
+
+
+                // Render the PayPal button into #paypal-button-container
+                paypal.Buttons({
+
+                    // Set up the transaction
+                    createOrder: function(data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: total
+                                }
+                            }]
+                        });
+                    },
+
+                    // Finalize the transaction
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            // Show a success message to the buyer
+                            completeOrder()
+                            alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                        });
+                    }
+
+
+                }).render('#paypal-button-container');
+            </script>
+--->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="checkout__order__widget">
+                                    <label for="o-acc">
+                                        Create an acount?
+                                        <input type="checkbox" id="o-acc">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <p>Create am acount by entering the information below. If you are a returing customer
+                                    login at the top of the page.</p>
+                                    <label for="check-payment">
+                                        Cheque payment
+                                        <input type="checkbox" id="check-payment">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label for="paypal">
+                                        PayPal
+                                        <input type="checkbox" id="paypal">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+        </div>
+        </section>
+
+
+
+
+
+
+
+
+
+
+        <!-- Checkout Section End -->
+
+        <!-- Instagram Begin -->
+{% endblock %}
+
+
+
+
